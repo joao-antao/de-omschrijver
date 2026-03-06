@@ -5,8 +5,6 @@ namespace DeOmschrijver.Configuration;
 /// </summary>
 public class MistralOptions
 {
-    public const string SectionName = "Mistral";
-
     /// <summary>
     /// The API key for accessing the Mistral API.
     /// </summary>

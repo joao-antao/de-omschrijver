@@ -6,8 +6,6 @@ using de_omschrijver.cli.Security;
 using Mistral.SDK;
 using Mistral.SDK.DTOs;
 
-namespace DeOmschrijver.Services;
-
 /// <summary>
 /// Handles communication with the Mistral API and parsing of the response.
 /// </summary>
@@ -15,12 +13,12 @@ public class RewriterService
 {
     private readonly MistralClient _client;
 
-    public RewriterService()
+    public RewriterService(string key)
     {
-        var apiKey = Environment.GetEnvironmentVariable("MISTRAL_API_KEY")
-            ?? throw new InvalidOperationException("MISTRAL_API_KEY environment variable is not set.");
+        if (string.IsNullOrWhiteSpace(key))
+            throw new ArgumentNullException(nameof(key), "MISTRAL_API_KEY environment variable is not set.");
 
-        _client = new MistralClient(apiKey);
+        _client = new MistralClient(key);
     }
 
     /// <summary>

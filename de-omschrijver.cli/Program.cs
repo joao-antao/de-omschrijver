@@ -9,13 +9,27 @@
  */
 
 using de_omschrijver.cli.Cli;
-using DeOmschrijver.Services;
+using DeOmschrijver.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+
+var configuration = new ConfigurationBuilder()
+    .AddUserSecrets<MistralOptions>()
+    .Build();
+
+var services = new ServiceCollection()
+    .Configure<MistralOptions>(configuration.GetSection(nameof(MistralOptions)))
+    .AddOptions()
+    .BuildServiceProvider();
+
+var mistralOptions = services.GetRequiredService<IOptions<MistralOptions>>();
 
 // Show welcome screen
 InteractivePrompt.ShowWelcome();
 
 // Initialize the service once
-var service = new RewriterService();
+var service = new RewriterService(mistralOptions.Value.ApiKey);
 
 // Main loop - allows user to process multiple properties
 while (true)
