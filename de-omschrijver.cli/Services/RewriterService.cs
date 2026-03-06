@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using de_omschrijver.cli.Models;
 using de_omschrijver.cli.Prompts;
+using de_omschrijver.cli.Security;
 using Mistral.SDK;
 using Mistral.SDK.DTOs;
 
@@ -27,17 +28,19 @@ public class RewriterService
     /// </summary>
     public async Task<RewriteResult> RewriteAsync(string rawDescription, bool includeReasoning)
     {
+        var sanitisedDescription = InputGuard.Validate(rawDescription);
+
         var request = new ChatCompletionRequest(
             ModelDefinitions.MistralSmall,
             [
                 new ChatMessage(ChatMessage.RoleEnum.System, PromptBuilder.SystemPrompt),
-                new ChatMessage(ChatMessage.RoleEnum.User, PromptBuilder.Build(rawDescription, includeReasoning))
+                new ChatMessage(ChatMessage.RoleEnum.User, PromptBuilder.Build(sanitisedDescription, includeReasoning))
             ],
-            maxTokens: 1024, // Max tokens for the response.
+            maxTokens: 1024, // Max tokens used for the response.
             temperature: 0.3m // Temperature controls how "random" the model's token selection is.
         );
-
-        // Non-streaming call
+        
+        // Non-streaming call to get the full response at once. For larger responses, consider using streaming to process tokens as they arrive.
         var response = await _client.Completions.GetCompletionAsync(request);
 
         var responseText = response.Choices.First().Message.Content
