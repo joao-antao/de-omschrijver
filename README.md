@@ -13,9 +13,9 @@ A CLI tool that rewrites raw property keywords into polished, professional listi
 
 ## Concepts explored 
 
-* Few-shot prompting: giving the model examples to shape tone, format, and length.
-* Chain-of-thoughts: scaffolding intermediate output to improve quality on complex tasks, and importantly, why it works (more tokens = more context for the final output, no human reasoning). See [link](https://www.ibm.com/think/topics/chain-of-thoughts)
-* Structured outputs: using a JSON schema to make responses predictable and parseable.
+* **Few-shot prompting**: Giving the model examples to shape tone, format, and length.
+* **Chain-of-thought**: Scaffolding intermediate output to improve quality on complex tasks, and importantly, why it works (more tokens = more context for the final output, no human reasoning). See [link](https://www.ibm.com/think/topics/chain-of-thoughts)
+* **Structured outputs**: Using a JSON schema to make responses predictable and parseable.
 
 ## Usage
 
