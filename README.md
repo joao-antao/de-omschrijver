@@ -13,6 +13,7 @@ A CLI tool that rewrites raw property keywords into polished, professional listi
 
 ## Concepts explored 
 
+* **Tokens**: Tokens serve as the smallest individual units that a language model processes, typically representing common sequences of characters such as words or subwords. In order for a language model to comprehend text, it must be converted into numerical representations. This is accomplished by encoding the text into a series of tokens, where each token is assigned a unique numerical index. The process of converting text into tokens is known as tokenization.
 * **Few-shot prompting**: Giving the model examples to shape tone, format, and length.
 * **Chain-of-thought**: Scaffolding intermediate output to improve quality on complex tasks, and importantly, why it works (more tokens = more context for the final output, no human reasoning). See [link](https://www.ibm.com/think/topics/chain-of-thoughts)
 * **Structured outputs**: Using a JSON schema to make responses predictable and parseable.

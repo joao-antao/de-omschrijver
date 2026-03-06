@@ -33,10 +33,11 @@ public class RewriterService
                 new ChatMessage(ChatMessage.RoleEnum.System, PromptBuilder.SystemPrompt),
                 new ChatMessage(ChatMessage.RoleEnum.User, PromptBuilder.Build(rawDescription, includeReasoning))
             ],
-            maxTokens: 256,
-            temperature: 0.3m
+            maxTokens: 1024, // Max tokens for the response.
+            temperature: 0.3m // Temperature controls how "random" the model's token selection is.
         );
 
+        // Non-streaming call
         var response = await _client.Completions.GetCompletionAsync(request);
 
         var responseText = response.Choices.First().Message.Content
