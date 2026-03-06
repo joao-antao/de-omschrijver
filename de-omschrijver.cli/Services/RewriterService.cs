@@ -1,0 +1,74 @@
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using de_omschrijver.cli.Models;
+using de_omschrijver.cli.Prompts;
+using Mistral.SDK;
+using Mistral.SDK.DTOs;
+
+namespace DeOmschrijver.Services;
+
+/// <summary>
+/// Handles communication with the Mistral API and parsing of the response.
+/// </summary>
+public class RewriterService
+{
+    private readonly MistralClient _client;
+
+    public RewriterService()
+    {
+        var apiKey = Environment.GetEnvironmentVariable("MISTRAL_API_KEY")
+            ?? throw new InvalidOperationException("MISTRAL_API_KEY environment variable is not set.");
+
+        _client = new MistralClient(apiKey);
+    }
+
+    /// <summary>
+    /// Sends a raw property description to Mistral and returns a structured rewrite result.
+    /// </summary>
+    public async Task<RewriteResult> RewriteAsync(string rawDescription, bool includeReasoning)
+    {
+        var request = new ChatCompletionRequest(
+            ModelDefinitions.MistralSmall,
+            [
+                new ChatMessage(ChatMessage.RoleEnum.System, PromptBuilder.SystemPrompt),
+                new ChatMessage(ChatMessage.RoleEnum.User, PromptBuilder.Build(rawDescription, includeReasoning))
+            ],
+            maxTokens: 256,
+            temperature: 0.3m
+        );
+
+        var response = await _client.Completions.GetCompletionAsync(request);
+
+        var responseText = response.Choices.First().Message.Content
+            ?? throw new InvalidOperationException("Empty response from Mistral.");
+
+        return ParseResponse(responseText);
+    }
+
+    /// <summary>
+    /// Extracts structured JSON and optional reasoning from the model's raw response text.
+    /// </summary>
+    private static RewriteResult ParseResponse(string responseText)
+    {
+        string? reasoning = null;
+        string jsonText = responseText.Trim();
+
+        // Extract chain-of-thought block if present
+        var reasoningMatch = Regex.Match(responseText, @"<reasoning>(.*?)</reasoning>", RegexOptions.Singleline);
+        if (reasoningMatch.Success)
+        {
+            reasoning = reasoningMatch.Groups[1].Value.Trim();
+            jsonText = responseText[(reasoningMatch.Index + reasoningMatch.Length)..].Trim();
+        }
+
+        // Strip markdown code fences if the model wraps the JSON in them
+        jsonText = Regex.Replace(jsonText, @"^```(json)?\s*", "", RegexOptions.Multiline)
+                        .TrimEnd('`')
+                        .Trim();
+
+        var listing = JsonSerializer.Deserialize<PropertyListing>(jsonText)
+            ?? throw new JsonException("Deserialized listing was null.");
+
+        return new RewriteResult(listing, reasoning);
+    }
+}
