@@ -5,10 +5,17 @@ A CLI tool that rewrites raw property keywords into polished, professional listi
 ## Features
 
 - 🤖 **AI-Powered Rewriting**: Uses Mistral AI (Le Chat) to transform basic property descriptions into professional listings
-- 💭 **Chain-of-Thought**: Optional reasoning output to see how the AI analyzes the property, see (link)[https://www.ibm.com/think/topics/chain-of-thoughts].
+- 💭 **Chain-of-Thought**: Optional reasoning output to see how the AI analyzes the property.
 - 📝 **Structured Output**: Generates headline, description, highlights, and condition assessment
 - 🔄 **Interactive Interface**: User-friendly prompts guide you through the process
 - 📁 **File Support**: Load descriptions from text files or type them directly
+
+
+## Concepts explored 
+
+* Few-shot prompting: giving the model examples to shape tone, format, and length.
+* Chain-of-thoughts: scaffolding intermediate output to improve quality on complex tasks, and importantly, why it works (more tokens = more context for the final output, no human reasoning). See [link](https://www.ibm.com/think/topics/chain-of-thoughts)
+* Structured outputs: using a JSON schema to make responses predictable and parseable.
 
 ## Usage
 

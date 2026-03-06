@@ -2,7 +2,7 @@
  * De Omschrijver
  * ==============
  *
- * Rewrites raw property keywords into polished, professional listing descriptions.
+ * Rewrites raw property keywords into polished and professional listing descriptions.
  *
  * Usage:
  *   dotnet run
