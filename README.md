@@ -17,6 +17,7 @@ A CLI tool that rewrites raw property keywords into polished, professional listi
 * **Few-shot prompting**: Giving the model examples to shape tone, format, and length.
 * **Chain-of-thought**: Scaffolding intermediate output to improve quality on complex tasks, and importantly, why it works (more tokens = more context for the final output, no human reasoning). See [link](https://www.ibm.com/think/topics/chain-of-thoughts)
 * **Structured outputs**: Using a JSON schema to make responses predictable and parseable.
+* **System prompt**: The instruction layer that runs before any user interaction. It sets the model's role, rules, constraints, and behaviour for the entire conversation. The model treats it as higher-trust than user input, which is exactly why prompt injection tries to override it.
 
 ## Usage
 
