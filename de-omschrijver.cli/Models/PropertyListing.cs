@@ -13,6 +13,12 @@ public record PropertyListing(
 );
 
 /// <summary>
-/// Wraps the parsed listing together with optional chain-of-thought reasoning.
+/// Token usage statistics returned by the Mistral API.
 /// </summary>
-public record RewriteResult(PropertyListing Listing, string? Reasoning);
+public record TokenUsage(int PromptTokens, int CompletionTokens, int TotalTokens);
+
+/// <summary>
+/// Wraps the parsed listing together with optional chain-of-thought reasoning
+/// and token usage statistics.
+/// </summary>
+public record RewriteResult(PropertyListing Listing, string? Reasoning, TokenUsage Usage);

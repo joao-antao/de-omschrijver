@@ -54,6 +54,13 @@ public static class ConsoleDisplay
         Console.WriteLine($"\n  🔧 Condition: {result.Listing.Condition}");
         Console.ResetColor();
         
+        // Token usage — useful for understanding cost and prompt efficiency
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"\n📊 TOKEN USAGE:");
+        Console.WriteLine($"   Prompt:     {result.Usage.PromptTokens} tokens");
+        Console.WriteLine($"   Completion: {result.Usage.CompletionTokens} tokens");
+        Console.WriteLine($"   Total:      {result.Usage.TotalTokens} tokens");
+        
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine($"\n{Separator}\n");
         Console.ResetColor();

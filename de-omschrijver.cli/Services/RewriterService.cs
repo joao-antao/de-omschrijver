@@ -37,20 +37,27 @@ public class RewriterService
             maxTokens: 1024, // Max tokens used for the response.
             temperature: 0.3m // Temperature controls how "random" the model's token selection is.
         );
-        
+
         // Non-streaming call to get the full response at once. For larger responses, consider using streaming to process tokens as they arrive.
         var response = await _client.Completions.GetCompletionAsync(request);
 
         var responseText = response.Choices.First().Message.Content
-            ?? throw new InvalidOperationException("Empty response from Mistral.");
+                           ?? throw new InvalidOperationException("Empty response from Mistral.");
 
-        return ParseResponse(responseText);
+        // Capture token usage from the API response
+        var usage = new TokenUsage(
+            PromptTokens: response.Usage.PromptTokens,
+            CompletionTokens: response.Usage.CompletionTokens,
+            TotalTokens: response.Usage.TotalTokens
+        );
+
+        return ParseResponse(responseText, usage);
     }
 
     /// <summary>
     /// Extracts structured JSON and optional reasoning from the model's raw response text.
     /// </summary>
-    private static RewriteResult ParseResponse(string responseText)
+    private static RewriteResult ParseResponse(string responseText, TokenUsage usage)
     {
         string? reasoning = null;
         string jsonText = responseText.Trim();
@@ -71,6 +78,6 @@ public class RewriterService
         var listing = JsonSerializer.Deserialize<PropertyListing>(jsonText)
             ?? throw new JsonException("Deserialized listing was null.");
 
-        return new RewriteResult(listing, reasoning);
+        return new RewriteResult(listing, reasoning, usage);
     }
 }
