@@ -9,10 +9,10 @@ Each page dives into a specific concept, explaining theory, best practices, and 
 ## 🧩 [Tokens](Tokens.md)
 Learn about the fundamental units that language models process, how tokenization works, and why token counts matter for your API usage and costs.
 
-## 🎯 [Few-shot prompting](Few-shot-prompting.md)
+## 🎯 [Few-shot prompting](Few‐shot-prompting.md)
 Discover how providing examples to the model can dramatically improve output quality, consistency, and style without any model fine-tuning.
 
-## 🧠 [Chain-of-thought](Chain-of-thought.md)
+## 🧠 [Chain-of-thought](Chain‐of‐thought.md)
 Explore how asking models to "think out loud" improves reasoning quality on complex tasks, and why this technique actually works.
 
 ## 📋 [Structured outputs](Structured-outputs.md)
